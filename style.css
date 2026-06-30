@@ -1,0 +1,111 @@
+:root { 
+    --main-bg: #121212; 
+    --accent: #ff4081; 
+    --text: #ffffff; 
+}
+
+body { 
+    font-family: 'Segoe UI', sans-serif; 
+    background: var(--main-bg); 
+    color: var(--text); 
+    margin: 0; 
+    padding: 20px; 
+    overflow-x: hidden; /* Zapobiega pojawieniu się paska przewijania przy animacji */
+}
+
+header { 
+    text-align: center; 
+    margin-bottom: 30px; 
+}
+
+h1 { 
+    color: var(--accent); 
+    font-size: 1.5rem; 
+}
+
+.grid-menu { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 15px; 
+    margin-bottom: 30px;
+}
+
+.menu-item { 
+    background: #1e1e1e; 
+    padding: 20px; 
+    border-radius: 15px; 
+    text-align: center; 
+    text-decoration: none; 
+    color: white; 
+    border: 1px solid #333; 
+    transition: 0.3s; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.menu-item:active { 
+    transform: scale(0.95); 
+    background: var(--accent); 
+}
+
+#timer { 
+    font-size: 1.2rem; 
+    margin-top: 20px; 
+    border-top: 1px solid #333; 
+    padding-top: 20px; 
+}
+
+/* --- Sekcja Słodkiego Panic Buttona --- */
+.panic-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    padding-bottom: 40px;
+}
+
+.sweet-panic-btn {
+    background: linear-gradient(135deg, #ff4081, #ff79a1);
+    color: white;
+    border: none;
+    padding: 18px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 30px;
+    box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s;
+    width: 100%;
+    max-width: 350px;
+    letter-spacing: 1px;
+}
+
+.sweet-panic-btn:active {
+    transform: scale(0.92);
+    box-shadow: 0 2px 8px rgba(255, 64, 129, 0.2);
+}
+
+/* --- Klasa animacyjna dla dynamicznych serduszek --- */
+.floating-heart {
+    position: fixed;
+    bottom: -50px;
+    font-size: 2rem;
+    pointer-events: none; /* Serduszka nie blokują kliknięć w inne elementy */
+    z-index: 9999;
+    animation: floatUp 3s ease-in-out forwards;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) scale(0.5) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-90vh) scale(1.5) rotate(25deg);
+        opacity: 0;
+    }
+}

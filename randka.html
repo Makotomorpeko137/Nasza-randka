@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Umów randkę</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .form-container { background: #1e1e1e; padding: 20px; border-radius: 15px; border: 1px solid #333; margin-top: 10px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: var(--accent); }
+        
+        select, input[type="text"], input[type="datetime-local"] { 
+            width: 100%; padding: 12px; background: #2a2a2a; border: 1px solid #444; 
+            border-radius: 8px; color: white; font-size: 1rem; box-sizing: border-box; transition: 0.3s;
+        }
+        select:focus, input:focus { border-color: var(--accent); outline: none; }
+        
+        .custom-input-wrapper { margin-top: 10px; display: none; }
+        
+        .submit-btn { 
+            background: linear-gradient(135deg, #ff4081, #ff79a1); color: white; border: none; 
+            padding: 15px; width: 100%; border-radius: 25px; font-size: 1.1rem; font-weight: bold; 
+            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.3); cursor: pointer; margin-top: 10px; transition: transform 0.1s;
+        }
+        .submit-btn:active { transform: scale(0.95); }
+        
+        .back-link { display: inline-block; margin-top: 20px; color: #aaa; text-decoration: none; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Generator Randek</h1>
+        <p>Zaplanujmy coś fajnego!</p>
+    </header>
+
+    <div class="form-container">
+        <form id="date-form">
+            <div class="form-group">
+                <label for="venue">U kogo urzędujemy?</label>
+                <select id="venue" onchange="toggleCustomInput('venue')">
+                    <option value="U mnie">U mnie (u Kuby)</option>
+                    <option value="U Ciebie">U Ciebie (u Leny)</option>
+                    <option value="custom">Inne... (wpisz własne)</option>
+                </select>
+                <div id="venue-custom-wrapper" class="custom-input-wrapper">
+                    <input type="text" id="venue-custom" placeholder="Gdzie dokładnie?">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="duration">Na jak długo?</label>
+                <select id="duration" onchange="toggleCustomInput('duration')">
+                    <option value="Szybka kawa (1-2h)">Szybka kawa (1-2h)</option>
+                    <option value="Porządne kilka godzin">Porządne kilka godzin</option>
+                    <option value="Cały dzień i noc">Cały dzień i noc (nie ma sznas)</option>
+                    <option value="Cały weekend">Cały weekend (kupię twojej mamie chyba 3 bombonierki jak się zgodzi)</option>
+                    <option value="custom">Inne... (wpisz własne)</option>
+                </select>
+                <div id="duration-custom-wrapper" class="custom-input-wrapper">
+                    <input type="text" id="duration-custom" placeholder="Na ile masz ochotę?">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="activity">Co robimy / Na co masz ochotę?</label>
+                <select id="activity" onchange="toggleCustomInput('activity')">
+                    <option value="Spacer i jedzenie">Spacer i dobre jedzenie</option>
+                    <option value="Maraton filmowy/gier">Domowy maraton filmowy / granie na konsoli</option>
+                    <option value="Koncert / Wyjście na miasto">Koncert / Luźne wyjście w miasto</option>
+                    <option value="Słodkie lenistwo i przytulanie">Słodkie lenistwo i przytulanie</option>
+                    <option value="custom">Inne... (wpisz własne)</option>
+                </select>
+                <div id="activity-custom-wrapper" class="custom-input-wrapper">
+                    <input type="text" id="activity-custom" placeholder="Twoja propozycja spędzania czasu...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="date-time">Kiedy (Data i godzina)?</label>
+                <input type="datetime-local" id="date-time" required>
+            </div>
+
+            <button type="submit" class="submit-btn">Wyślij propozycję randki! 🚀</button>
+        </form>
+    </div>
+
+    <center><a href="index.html" class="back-link">⬅ Wróć do ekranu głównego</a></center>
+
+    <script>
+        // Funkcja sterująca widocznością pól ukrytych pod opcją "Inne..."
+        function toggleCustomInput(fieldId) {
+            const selectElement = document.getElementById(fieldId);
+            const customWrapper = document.getElementById(fieldId + '-custom-wrapper');
+            
+            if (selectElement.value === 'custom') {
+                customWrapper.style.display = 'block';
+                document.getElementById(fieldId + '-custom').required = true;
+            } else {
+                customWrapper.style.display = 'none';
+                document.getElementById(fieldId + '-custom').required = false;
+            }
+        }
+
+        // Przechwycenie wysyłania formularza i integracja z Telegramem
+        document.getElementById('date-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Pobieranie ostatecznych wartości (zwykła lub wpisana ręcznie)
+            let venueResult = document.getElementById('venue').value;
+            if (venueResult === 'custom') venueResult = document.getElementById('venue-custom').value;
+
+            let durationResult = document.getElementById('duration').value;
+            if (durationResult === 'custom') durationResult = document.getElementById('duration-custom').value;
+
+            let activityResult = document.getElementById('activity').value;
+            if (activityResult === 'custom') activityResult = document.getElementById('activity-custom').value;
+
+            const dateTimeResult = document.getElementById('date-time').value.replace('T', ' o godzinie ');
+
+            // Formatowanie wiadomości, która przyjdzie na Twój telefon
+            const message = `🔔 *Nowa propozycja randki!* \n\n` +
+                            `📍 *U kogo:* ${venueResult}\n` +
+                            `⏳ *Na ile:* ${durationResult}\n` +
+                            `🎯 *Co robimy:* ${activityResult}\n` +
+                            `📅 *Kiedy:* ${dateTimeResult}`;
+
+            // --- KONFIGURACJA TELEGRAMA ---
+            // Wklej tutaj swoje dane wygenerowane według instrukcji poniżej
+            const botToken = '8873369856:AAFApy-fmPg6UNizX5uJmFvTFVTEUNqNUwQ';
+            const chatId = '8310929738';
+            
+            const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+            fetch(telegramUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message,
+                    parse_mode: 'Markdown'
+                })
+            })
+            .then(response => {
+                if(response.ok) {
+                    alert('Propozycja została wysłana do Kuby! Czekaj na odpowiedź! ❤️');
+                    document.getElementById('date-form').reset();
+                    // Ukrycie pól tekstowych po restarcie formy
+                    document.querySelectorAll('.custom-input-wrapper').forEach(el => el.style.display = 'none');
+                } else {
+                    alert('Coś poszło nie tak przy wysyłaniu... zgłoś to swojemu nerdowi.');
+                }
+            })
+            .catch(error => {
+                console.error('Błąd:', error);
+                alert('Błąd sieciowy. Spróbuj ponownie.');
+            });
+        });
+    </script>
+</body>
+</html>

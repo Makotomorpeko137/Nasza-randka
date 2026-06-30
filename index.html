@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dla Ciebie</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Cześć, Skarbie!</h1>
+        <div id="timer">Jesteśmy razem od: <br><span id="time-counter">...</span></div>
+    </header>
+
+    <nav class="grid-menu">
+        <a href="randka.html" class="menu-item">📅 Randka</a>
+        <a href="galeria.html" class="menu-item">📸 Galeria</a>
+        <a href="quiz.html" class="menu-item">🧠 Quiz</a>
+        <a href="skrytka.html" class="menu-item">💌 Skrytka</a>
+        <a href="słoik.html" class="menu-item">🫙 Słoik dobrych myśli</a>
+        <a href="muzyka.html" class="menu-item">🎸 Muzyka</a>
+    </nav>
+
+    <div class="panic-container">
+        <button id="panic-btn" class="sweet-panic-btn">🆘 Ratunek na zły humor</button>
+    </div>
+
+    <script>
+        // Prosty licznik czasu
+        const start = new Date("2026-06-01T00:00:00"); 
+        function updateTime() {
+            const now = new Date();
+            const diff = now - start;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById('time-counter').innerText = days + " dni";
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Logika Słodkiego Panic Buttona
+        const panicBtn = document.getElementById('panic-btn');
+        const sweetMessages = [
+            "Uśmiechnij się! ❤️",
+            "Jesteś cudowna! 💖",
+            "Myślę o Tobie! 🥰",
+            "Wszystko będzie dobrze! 💕",
+            "Kocham Cię! 💘"
+        ];
+        
+        let isPulsing = false; // Zapobiega spamowaniu przycisku
+
+        panicBtn.addEventListener('click', function() {
+            if (isPulsing) return;
+            isPulsing = true;
+            
+            // Zmiana tekstu na losową słodką wiadomość
+            const originalText = panicBtn.innerText;
+            const randomMsg = sweetMessages[Math.floor(Math.random() * sweetMessages.length)];
+            panicBtn.innerText = randomMsg;
+            
+            // Generowanie kaskady serduszek
+            createHeartsCascade();
+
+            // Powrót do oryginalnego tekstu po 3.5 sekundy
+            setTimeout(() => {
+                panicBtn.innerText = originalText;
+                isPulsing = false;
+            }, 3500);
+        });
+
+        function createHeartsCascade() {
+            const heartIcons = ['❤️', '💖', '💕', '💘', '💗'];
+            const heartsCount = 15; // Ilość serduszek podczas jednego kliknięcia
+
+            for (let i = 0; i < heartsCount; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('floating-heart');
+                    // Wybór losowej ikony serca
+                    heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+                    
+                    // Losowa pozycja w poziomie (od 10% do 90% szerokości ekranu)
+                    heart.style.left = Math.floor(Math.random() * 80 + 10) + 'vw';
+                    
+                    // Niewielkie zróżnicowanie czasu trwania animacji, aby wyglądało to naturalniej
+                    heart.style.animationDuration = (Math.random() * 1.5 + 2) + 's';
+
+                    document.body.appendChild(heart);
+
+                    // Usunięcie elementu z drzewa DOM po zakończeniu animacji (czyszczenie pamięci)
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 4000);
+                }, i * 150); // Każde kolejne serduszko pojawia się z minimalnym opóźnieniem
+            }
+        }
+    </script>
+</body>
+</html>
