@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Słoik Dobrych Myśli</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .jar-container { text-align: center; margin-top: 50px; }
+        #thought-display { 
+            font-size: 1.5rem; 
+            margin: 30px auto; 
+            padding: 20px; 
+            max-width: 500px; 
+            min-height: 100px;
+            color: var(--accent);
+            border: 2px dashed var(--accent);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-jar { background: var(--accent); color: white; padding: 15px 30px; border-radius: 30px; border: none; cursor: pointer; font-size: 1.1rem; }
+    </style>
+</head>
+<body>
+
+<header><h1>Słoik Dobrych Myśli</h1></header>
+
+<div class="jar-container">
+    <div id="thought-display">Kliknij słoik, by wyciągnąć dobrą myśl...</div>
+    <button class="btn-jar" onclick="wylosujMysl()">Wyciągnij myśl 🫙</button>
+    <br><br><a href="index.html" style="color:#aaa; text-decoration:none;">⬅ Wróć</a>
+</div>
+
+<script>
+    const mysli = [
+		"Jesteś ważniejsza niż jakiekolwiek liczby czy opinie.",
+        "Jestem przy Tobie, bez względu na wszystko.",
+        "Doceniam każdą chwilę, w której jesteś po prostu sobą.",
+        "Jesteś silniejsza, niż Ci się teraz wydaje.",
+        "Dziękuję, że jesteś – Twoja obecność jest dla mnie wszystkim.",
+        "Nie musisz radzić sobie ze wszystkim sama, masz mnie.",
+        "Każdy mały krok, który robisz, jest wielkim zwycięstwem.",
+        "Jesteś dla mnie najpiękniejsza, bo jesteś po prostu L.",
+        "Oddychaj. Jesteś tutaj i jesteś bezpieczna.",
+        "Nie oceniam, po prostu kocham. Zawsze.",
+        "Jesteś wartościowa dokładnie taka, jaka jesteś w tej chwili.",
+        "Będziemy razem przez te wszystkie trudne dni.",
+		"noł fjuczer skarbie",
+    ];
+
+    function wylosujMysl() {
+        const losowa = mysli[Math.floor(Math.random() * mysli.length)];
+        document.getElementById('thought-display').innerText = losowa;
+    }
+</script>
+
+</body>
+</html>
