@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nasza Galeria</title>
+    <link rel="stylesheet" href="style.css">">
+</head>
+<body>
+
+    <header>
+        <h1>Album Wspomnień</h1>
+        <p>Złapane momenty</p>
+    </header>
+
+    <div id="tab-moje" class="gallery-content active">
+	<h3> Kuba </h3>
+        <div class="photo-grid">
+            <div class="polaroid"><img src="IMG_20260624_211841.jpg" alt="Kuba"></div>
+            <div class="polaroid"><img src="IMG_20260625_145617.jpg" alt="Kuba"></div>
+			<div class="polaroid"><img src="IMG_20260628_170804.jpg" alt="Kuba"></div>
+        </div>
+    </div>
+
+    <div id="tab-wspolne" class="gallery-content">
+		<h3> Wspólne </h3>
+        <div class="photo-grid" id="grid-wspolne">
+            <div class="polaroid"><img src="IMG_20260605_154434_863.jpg" alt="Razem"></div>
+			<div class="polaroid"><img src="IMG_20260605_154438_594.jpg" alt="Razem"></div>
+			<div class="polaroid"><img src="IMG_20260608_175731_793.jpg" alt="Razem"></div>
+			
+        </div>
+        <div class="upload-section">
+            <label class="upload-btn-label">
+                Dodaj nasze zdjęcie ➕ (po zresetowaniu strony zniknie i ja go nie zobaczę, aby było na stałe muszę ręcznie je tam dać, to mi napisz to je dam)
+                <input type="file" accept="image/*" onchange="handleFileUpload(event, 'grid-wspolne')">
+            </label>
+        </div>
+    </div>
+
+    <div id="tab-swoje" class="gallery-content">
+		<h3> Lena </h3>
+        <div class="photo-grid" id="grid-swoje">
+		<div class="polaroid"><img src="IMG_20260606_114804_894.jpg" alt="Razem"></div>
+		<div class="polaroid"><img src="IMG_20260624_213213_814.jpg" alt="Razem"></div>
+		<div class="polaroid"><img src="Screenshot_2026-06-08-17-35-46-436_com.instagram.android~2.jpg" alt="Razem"></div>
+            </div>
+        <div class="upload-section">
+            <label class="upload-btn-label">
+                Wgraj swoje zdjęcie ➕ (po zresetowaniu strony zniknie i ja go nie zobaczę, aby było na stałe muszę ręcznie je tam dać, to mi napisz to je dam)
+                <input type="file" accept="image/*" onchange="handleFileUpload(event, 'grid-swoje')">
+            </label>
+        </div>
+    </div>
+
+    <center><a href="index.html" style="display:inline-block; margin-top:30px; color:#aaa; text-decoration:none;">⬅ Wróć</a></center>
+
+    <script>
+        // Logika przełączania zakładek
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.gallery-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        // Logika asynchronicznego wgrywania plików z poziomu przeglądarki
+        function handleFileUpload(event, targetGridId) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgData = e.target.result;
+                
+                // Tworzenie elementu DOM dla nowego zdjęcia
+                const polaroidDiv = document.createElement('div');
+                polaroidDiv.classList.add('polaroid');
+                
+                const imgElement = document.createElement('img');
+                imgElement.src = imgData;
+                
+                polaroidDiv.appendChild(imgElement);
+                document.getElementById(targetGridId).appendChild(polaroidDiv);
+            };
+            reader.readAsDataURL(file);
+        }
+    </script>
+</body>
+</html>
